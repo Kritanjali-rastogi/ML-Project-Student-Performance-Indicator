@@ -11,9 +11,9 @@ from dataclasses import dataclass
 
 @dataclass
 class DataIngestionConfiguration:
-    train_data_path = os.path.join('artifacts', 'train.csv')
-    test_data_path = os.path.join('artifacts', 'test.csv')
-    raw_data_path = os.path.join('artifacts', 'raw.csv')
+    train_data_path: str = os.path.join('artifacts', 'train.csv')
+    test_data_path: str = os.path.join('artifacts', 'test.csv')
+    raw_data_path: str = os.path.join('artifacts', 'raw.csv')
 
 
 # Data Ingestion Class
@@ -35,14 +35,18 @@ class DataIngestion:
 
             # Applying train-test split
 
-            train_df, test_df = train_test_split(df,test_size= 0.30, random_state=42)
+            logging.info("Train test split began")
 
-            train_df.to_csv(self.ingestion_config.train_data_path, header = True, index = True)
-            test_df.to_csv(self.ingestion_config.test_data_path, header = True, index = True)
+            train_set, test_set = train_test_split(df,test_size= 0.30, random_state=42)
+
+            train_set.to_csv(self.ingestion_config.train_data_path, header = True, index = True)
+            test_set.to_csv(self.ingestion_config.test_data_path, header = True, index = True)
 
             return (self.ingestion_config.train_data_path,
                     self.ingestion_config.test_data_path)
+        
+            logging.info("Data ingestion completed successfully")
 
         except Exception as e:
-            logging.info("Error occured in data ingestion")
+            logging.info("Error occured in data tarnsformation")
             raise CustomException(e,sys)
