@@ -45,14 +45,36 @@ class ModelTrainer:
                       'Decision_Tree': DecisionTreeRegressor(),
                       'SVM': SVR(),
                       'KNeighborsRegressor': KNeighborsRegressor(),
-                      'RandonForest': RandomForestRegressor(),
+                      'RandomForest': RandomForestRegressor(),
                       'AdaBoost': AdaBoostRegressor(),
                       'XGB': XGBRegressor(),
                       'CatBoost': CatBoostRegressor()}
             
             logging.info("Model evaluation started")
+            
+            params = {
+                'Linear Regression': {}, 
+                'Lasso': {}, 
+                'Ridge': {}, 
+                'ElasticNet': {},
+                'Decision_Tree': {'criterion': ['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
+                                  'splitter':['best','random'],'max_features':['sqrt','log2']},
+                'SVM': {},
+                'KNeighborsRegressor': {'weights': ['uniform', 'distance'],
+                                        'algorithm': ['auto', 'ball_tree', 'kd_tree', 'brute']},
+                "RandomForest":{'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
+                                'max_features':['sqrt','log2',None],
+                                'n_estimators': [8,16,32,64,128,256]},
+                'AdaBoost':{'learning_rate':[.1,.01,0.5,.001],
+                            'loss':['linear','square','exponential'],
+                            'n_estimators': [8,16,32,64,128,256]},
+                "XGB":{'learning_rate':[.1,.01,.05,.001],
+                       'n_estimators': [8,16,32,64,128,256]},
+                'CatBoost':{'depth': [6,8,10],
+                                         'learning_rate': [0.01, 0.05, 0.1],
+                                         'iterations': [30, 50, 100]}}
 
-            model_report: dict = evaluate_model(X_train, y_train, X_test, y_test, models=models)
+            model_report: dict = evaluate_model(X_train, y_train, X_test, y_test, models = models, params=params)
 
             # Best Score
 
