@@ -5,6 +5,8 @@ from src.exception import CustomException
 from src.components.data_ingestion import DataIngestion
 from src.components.data_transformation import DataTransformation
 from src.components.model_trainer import ModelTrainer
+from src.components.model_evaluation import ModelEvaluation
+
 
 
 if __name__=='__main__':
@@ -17,6 +19,6 @@ if __name__=='__main__':
 
     model_trainer_obj = ModelTrainer()
     r2_score = model_trainer_obj.initiate_model_trainer(train_arr, test_arr)
-    
 
-
+    model_evaluation_obj = ModelEvaluation()
+    model_evaluation_obj.initiate_model_evaluation(train_arr=train_arr, test_arr= test_arr)
